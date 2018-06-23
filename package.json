@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@storybook/cli": "^3.4.8",
     "autoprefixer": "^8.5.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -24,6 +25,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "browser-sync": "^2.24.4",
     "clean-webpack-plugin": "^0.1.19",
+    "cross-env": "^5.1.6",
     "css-loader": "^0.28.11",
     "cssnext": "^1.8.4",
     "eslint": "^4.19.1",
@@ -69,6 +71,10 @@
     "reselect": "^3.0.1",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "history": "^4.7.2",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.1",
+    "store": "^2.0.12"
   }
 }
