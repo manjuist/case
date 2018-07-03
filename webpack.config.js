@@ -3,6 +3,7 @@ const webpack           = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
 //const { injectBabelPlugin } = require('react-app-rewired');
 const config = {
@@ -17,6 +18,33 @@ const config = {
         publicPath:'/',
 		filename:'[name].bundle.js'
 	},
+    optimization: {
+        splitChunks: {
+                  chunks: 'async',
+                  minSize: 30000,
+                  minChunks: 1,
+                  maxAsyncRequests: 5,
+                  maxInitialRequests: 3,
+                  automaticNameDelimiter: '~',
+                  name: true,
+            cacheGroups: {
+                vendors: {
+                              test: /[\\/]node_modules[\\/]/,
+                              priority: -10
+                            
+                },
+                default: {
+                              minChunks: 2,
+                              priority: -20,
+                              reuseExistingChunk: true
+                            
+                }
+                      
+            }
+                
+        }
+          
+    },
     devServer:{
         hot:true,
         inline:true,//inline模式
@@ -25,7 +53,7 @@ const config = {
         port:3000
     },
     //resolve:{
-        //alias{}
+        //alias:{}
     //},
 	module:{
 		// 加载器配置
@@ -96,11 +124,11 @@ const config = {
         new webpack.DefinePlugin({
             PRODUCTION:JSON.stringify('production'),
         }),
+        new FriendlyErrorsPlugin(),
         new ExtractTextPlugin('style.css'),
         //new webpack.optimize.UglifyJsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        //new webpack.optimize.CommonsChunkPlugin('common'),
+        new webpack.optimize.OccurrenceOrderPlugin()
     ]
 }
 
