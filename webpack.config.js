@@ -1,23 +1,22 @@
 const path              = require("path");
 const webpack           = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-
 //const { injectBabelPlugin } = require('react-app-rewired');
 const config = {
     devtool:'source-map',
-	// 页面入口
-	entry:{
-		index:path.resolve(__dirname,'src/index.js')
-	},
-	// 文件输出
-	output:{
-		path:path.resolve(__dirname,'dist'),
+    // 页面入口
+    entry:{
+        index:path.resolve(__dirname,'src/index.js')
+    },
+    // 文件输出
+    output:{
+        path:path.resolve(__dirname,'dist'),
         publicPath:'/',
-		filename:'[name].bundle.js'
-	},
+        filename:'[name].bundle.js'
+    },
     optimization: {
         splitChunks: {
                   chunks: 'async',
@@ -55,8 +54,8 @@ const config = {
     //resolve:{
         //alias:{}
     //},
-	module:{
-		// 加载器配置
+    module:{
+        // 加载器配置
         rules:[
             {
                 test:/\.(js|jsx)$/,
@@ -71,24 +70,27 @@ const config = {
             },
             {
                 test:/\.(css|scss)$/,
-                use:ExtractTextPlugin.extract({
-                    fallback:'style-loader',
-                    use:[
-                        {
-                            loader: 'css-loader',
-                            options:{
-                                sourceMap:true
-                            }
-                        },{
-                            loader: 'sass-loader',
-                            options:{
-                                sourceMap:true
-                            }
-                        },{
-                            loader: 'postcss-loader'
+                use:[
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: '../'
                         }
-                    ]
-                })
+                    },
+                    {
+                        loader: 'css-loader',
+                        options:{
+                            sourceMap:true
+                        }
+                    },{
+                        loader: 'sass-loader',
+                        options:{
+                            sourceMap:true
+                        }
+                    },{
+                        loader: 'postcss-loader'
+                    }
+                ]
             },
             {
                 test:/\.(png|jpg|git|svg)$/,
@@ -113,25 +115,27 @@ const config = {
                 ]
             }
         ]
-	},
-	// 插件项
+    },
+    // 插件项
     plugins:[
         new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             title:'index',
-            template:'index.ejs'
+            template:'index.html'
         }),
         new webpack.DefinePlugin({
             PRODUCTION:JSON.stringify('production'),
         }),
         new FriendlyErrorsPlugin(),
-        new ExtractTextPlugin('style.css'),
+        new MiniCssExtractPlugin({
+            filename:"[name].css",
+            chunkFilename: "[id].css"
+        }),
         //new webpack.optimize.UglifyJsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin()
     ]
 }
-
 module.exports = config;
 //module.exports = function override(config, env) {
       //config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }], config);
