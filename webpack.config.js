@@ -1,10 +1,14 @@
-const path              = require("path");
-const webpack           = require("webpack");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-//const { injectBabelPlugin } = require('react-app-rewired');
+const path              = require("path")
+const webpack           = require("webpack")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+//const { injectBabelPlugin } = require('react-app-rewired')
+
+const ROOT_PATH = path.resolve(__dirname)
+const APP_PATH = path.join(ROOT_PATH, 'src')
+
 const config = {
     devtool:'source-map',
     // 页面入口
@@ -30,19 +34,14 @@ const config = {
                 vendors: {
                               test: /[\\/]node_modules[\\/]/,
                               priority: -10
-                            
                 },
                 default: {
                               minChunks: 2,
                               priority: -20,
                               reuseExistingChunk: true
-                            
                 }
-                      
             }
-                
         }
-          
     },
     devServer:{
         hot:true,
@@ -51,9 +50,13 @@ const config = {
         compress:true,
         port:3000
     },
-    //resolve:{
-        //alias:{}
-    //},
+    resolve:{
+        alias:{
+            '@': ROOT_PATH,
+            'app': APP_PATH,
+            'scripts': path.join(APP_PATH,'scripts'),
+        }
+    },
     module:{
         // 加载器配置
         rules:[
@@ -136,8 +139,8 @@ const config = {
         new webpack.optimize.OccurrenceOrderPlugin()
     ]
 }
-module.exports = config;
+module.exports = config
 //module.exports = function override(config, env) {
-      //config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }], config);
-        //return config;
-      //};
+      //config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }], config)
+        //return config
+      //}
