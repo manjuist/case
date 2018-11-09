@@ -1,3 +1,4 @@
 module.exports= {
-  "/all": "/list"
+  "/info/list": "/list",
+  "/info/email": "/email",
 }

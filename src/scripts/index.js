@@ -10,12 +10,11 @@ import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom'
 import RouteList from 'scripts/Router'
 import Reducers from 'scripts/Reducers'
 import Header from 'scripts/Common/Header'
-import './styles/styles.scss'
+import 'styles/index.scss'
 
 const middleWare = [thunk, logger]
 const store = createStore(
   combineReducers({ Reducers }),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(...middleWare),
 )
 

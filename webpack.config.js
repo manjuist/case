@@ -13,7 +13,7 @@ const config = {
     devtool:'source-map',
     // 页面入口
     entry:{
-        index:path.resolve(__dirname,'src/index.js')
+        index:path.join(APP_PATH,'scripts/index.js')
     },
     // 文件输出
     output:{
@@ -48,13 +48,20 @@ const config = {
         inline:true,//inline模式
         contentBase:path.join(__dirname,'dist'),
         compress:true,
-        port:3000
+        port:3000,
+        proxy: {
+            '/info/*':{
+                target: 'http://localhost:3333',
+                port: 3333,
+            }
+        }
     },
     resolve:{
         alias:{
             '@': ROOT_PATH,
             'app': APP_PATH,
             'scripts': path.join(APP_PATH,'scripts'),
+            'styles': path.join(APP_PATH,'styles'),
         }
     },
     module:{

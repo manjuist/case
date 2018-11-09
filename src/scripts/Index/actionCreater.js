@@ -2,7 +2,7 @@ import * as actionTypes from './actionType';
 
 function actionCreator(payload) {
   return {
-    type: actionTypes.A,
+    type: actionTypes.LIST,
     payload,
   };
 }
