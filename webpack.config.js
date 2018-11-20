@@ -23,6 +23,7 @@ const config = {
     },
     devtool:'source-map',
     module:{
+        noParse: /react/,
         rules:[
             {
                 enforce: "pre",
