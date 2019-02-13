@@ -18,8 +18,6 @@ const store = createStore(
   applyMiddleware(...middleWare),
 )
 
-window.store = store
-
 render(
   <Provider store={store}>
     <Router>

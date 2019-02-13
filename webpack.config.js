@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
 //const { injectBabelPlugin } = require('react-app-rewired')
 
 const ROOT_PATH = path.resolve(__dirname)
@@ -57,6 +58,8 @@ const config = {
         }
     },
     resolve:{
+        modules:[path.resolve(__dirname, 'node_modules')],
+        extensions:['.js', '.jsx', '.scss', '.less', '.css'],
         alias:{
             '@': ROOT_PATH,
             'app': APP_PATH,
@@ -68,12 +71,13 @@ const config = {
         // 加载器配置
         rules:[
             {
-                test:/\.(js|jsx)$/,
+                test:/\.jsx?$/,
                 use:[
                     {
                         loader:'babel-loader',
                         options:{
-                            compact:false
+                            compact:false,
+                            cacheDirectory:true
                         }
                     }
                 ]
@@ -128,10 +132,14 @@ const config = {
     },
     // 插件项
     plugins:[
-        new CleanWebpackPlugin(['dist']),
+        new DllReferencePlugin({
+            manifest: require('./dist/react.manifest.json')
+        }),
+        //new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             title:'index',
-            template:'index.html'
+            template:'index.html',
+            dllFile: "react.dll.js"
         }),
         new webpack.DefinePlugin({
             PRODUCTION:JSON.stringify('production'),
@@ -147,7 +155,3 @@ const config = {
     ]
 }
 module.exports = config
-//module.exports = function override(config, env) {
-      //config = injectBabelPlugin(['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }], config)
-        //return config
-      //}
