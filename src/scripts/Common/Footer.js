@@ -1,7 +1,6 @@
-import React,{Component,PropTypes}                   from 'react';
-import ReactDOM,{render}                             from 'react-dom';
+import React from 'react';
 
-const Footer = () =>(
+const Footer = () => (
     <div>Footer</div>
 )
 

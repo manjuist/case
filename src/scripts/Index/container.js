@@ -1,9 +1,4 @@
-import React,{Component,PropTypes}                   from 'react';
-import ReactDOM,{render}                             from 'react-dom';
-import {HashRouter as Router,Route,Link,Switch}      from 'react-router-dom';
-import {Provider,connect}                            from 'react-redux';
-import actionCreator from './actionCreater'
-import Loadable from 'react-loadable'
+import { connect } from 'react-redux';
 import Index from './Components'
 
-export default connect(function(){return {a:'kkk'}},{function(){return{a:()=>{console.log(1)}}}})(Index)
+export default connect(() => ({ a: 'kkk' }), { function(){ return { a: () => {} } } })(Index)

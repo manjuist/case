@@ -1,13 +1,11 @@
 import axios from 'axios';
 
 const get = ({ url, params }) => (
-    axios.get(url,{params})
+    axios.get(url, { params })
 )
 
-const add = ({url, data}) => (
-    axios.post(url,{data})
+const add = ({ url, data }) => (
+    axios.post(url, { data })
 )
 
-export {
-    get,
-}
+export { get, add, }
