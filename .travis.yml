@@ -4,10 +4,11 @@ node_js:
     - 11
 
 install:
-    - npm i
+    - yarn i
 
 before_script:
-    - npm run build:dll
+    - yarn run build:dll
 script:
-    - npm run build
+    - yarn run build
+after_success:
     - ls ./dist
