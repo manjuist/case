@@ -84,6 +84,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
-    "store": "^2.0.12"
+    "store": "^2.0.12",
+    "uglify-js": "^3.4.9"
   }
 }
