@@ -1,9 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
 // const CleanWebpackPlugin = require('clean-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
@@ -16,10 +14,10 @@ const config = {
     mode: 'development',
     devtool: 'source-map',
     entry: {
-        index: path.join(APP_PATH, 'scripts/index.js')
+        index: path.join(APP_PATH, 'index.js')
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(ROOT_PATH, 'dist'),
         publicPath: '/',
         filename: '[name].bundle.js'
     },
@@ -63,9 +61,9 @@ const config = {
         extensions: ['.js', '.jsx', '.scss', '.less', '.css'],
         alias: {
             '@': ROOT_PATH,
-            app: APP_PATH,
-            scripts: path.join(APP_PATH, 'scripts'),
-            styles: path.join(APP_PATH, 'styles'),
+            app: APP_PATH
+            // scripts: path.join(APP_PATH, 'scripts'),
+            // styles: path.join(APP_PATH, 'styles'),
         }
     },
     module: {

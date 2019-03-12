@@ -1,18 +1,21 @@
 import React from 'react'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { 
+    createStore,
+    applyMiddleware,
+    combineReducers
+} from 'redux'
 import { render } from 'react-dom'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import logger from 'redux-logger'
 import { HashRouter as Router, Switch } from 'react-router-dom'
-import RouteList from 'scripts/Router'
-import Reducers from 'scripts/Reducers'
-import Header from 'scripts/Common/Header'
-import 'styles/index'
+import RouteList from 'app/base/Router'
+import Reducers from 'app/base/Reducers'
+import Header from 'app/common/Header'
 
 const middleWare = [thunk, logger]
 const store = createStore(
-    combineReducers({ Reducers }),
+    combineReducers({ ...Reducers }),
     applyMiddleware(...middleWare),
 )
 

@@ -34,6 +34,7 @@ module.exports = {
         // 句尾分号可以省略
         'semi': 'off',
         // 代码中console/debugger处理
+        'no-console': 'off',
         // 代码使用4个空格的缩进风格
         'indent': ['error', 4],
         // 关闭命名function表达式规则

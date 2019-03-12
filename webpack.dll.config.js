@@ -1,10 +1,8 @@
 const path = require('path')
-const webpack = require('webpack')
 const DllPlugin = require('webpack/lib/DllPlugin');
 // const { injectBabelPlugin } = require('react-app-rewired')
 
 const ROOT_PATH = path.resolve(__dirname)
-const APP_PATH = path.join(ROOT_PATH, 'src')
 
 const config = {
     // 页面入口
@@ -13,7 +11,7 @@ const config = {
     },
     // 文件输出
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(ROOT_PATH, 'dist'),
         publicPath: '/',
         library: '_dll_[name]',
         filename: '[name].dll.js'
