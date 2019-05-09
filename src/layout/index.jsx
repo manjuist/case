@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 
-const { Sider, Header, Content } = Layout
+const { Header, Content } = Layout
 
-function Root({ header, sider, content }) {
+function Root({ header, content }) {
     return (
         <Layout>
             <Header>{header}</Header>
             <Layout>
-                <Sider>{sider}</Sider>
                 <Content>{content}</Content>
             </Layout>
         </Layout>
@@ -18,7 +17,6 @@ function Root({ header, sider, content }) {
 
 Root.propTypes = { 
     header: PropTypes.node.isRequired,
-    sider: PropTypes.node.isRequired,
     content: PropTypes.node.isRequired,
 }
 

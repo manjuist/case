@@ -2,24 +2,36 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import HomeLayout from 'app/layout/home'
+import Info from 'components/home/info'
+import Other from 'components/home/other'
+import Profile from 'components/home/profile'
+import Project from 'components/home/project'
+import Skill from 'components/home/skill'
+import Tech from 'components/home/tech'
+import Work from 'components/home/work'
+import Sider from 'common/sider'
 import { showMoreHomeActionCreator } from './homeRedux'
 
-function Home({ setShowMoreHome, showMoreHome, match: { params: { id } } }){
+const contentList = {
+    info: <Info />,
+    other: <Other />,
+    profile: <Profile />,
+    project: <Project />,
+    skill: <Skill />,
+    tech: <Tech />,
+    work: <Work />,
+}
+function Home({ match: { params: { id } } }){
     return (
-        <button
-            type="button"
-            onClick={
-                () => { showMoreHome(true) }
-            }
-        >
-            {`${setShowMoreHome}${id}`}
-        </button>
+        <HomeLayout
+            sider={<Sider />}
+            content={contentList[id]}
+        />
     )
 }
 
 Home.propTypes = {
-    setShowMoreHome: PropTypes.bool.isRequired,
-    showMoreHome: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             id: PropTypes.string,
