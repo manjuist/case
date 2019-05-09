@@ -107,8 +107,6 @@ module.exports = {
         'react/jsx-filename-extension': ['error', {extensions: ['.js', '.jsx']}],
         // 数组索引可以用作key
         'react/no-array-index-key': 'off',
-        // 组件属性可以传any,array,object
-        'react/forbid-prop-types': 'off',
         // 关闭点击元素上强制增加onKey**事件
         'click-events-have-key-events': 'off',
         // 关闭引用依赖检查

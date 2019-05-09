@@ -14,7 +14,7 @@ const config = {
     mode: 'development',
     devtool: 'source-map',
     entry: {
-        index: path.join(APP_PATH, 'index.js')
+        app: path.join(APP_PATH, 'app.js')
     },
     output: {
         path: path.resolve(ROOT_PATH, 'dist'),
@@ -22,23 +22,20 @@ const config = {
         filename: '[name].bundle.js'
     },
     optimization: {
+        runtimeChunk: {
+            name: 'runtime'
+        },
         splitChunks: {
-            chunks: 'async',
-            minSize: 30000,
-            minChunks: 1,
-            maxAsyncRequests: 5,
-            maxInitialRequests: 3,
-            automaticNameDelimiter: '~',
-            name: true,
             cacheGroups: {
                 vendors: {
                     test: /[\\/]node_modules[\\/]/,
-                    priority: -10
+                    chunks: 'initial',
+                    name: 'vendor'
                 },
                 default: {
+                    chunks: 'initial',
                     minChunks: 2,
-                    priority: -20,
-                    reuseExistingChunk: true
+                    name: 'default'
                 }
             }
         }
@@ -61,7 +58,11 @@ const config = {
         extensions: ['.js', '.jsx', '.scss', '.less', '.css'],
         alias: {
             '@': ROOT_PATH,
-            app: APP_PATH
+            app: APP_PATH,
+            views: path.resolve(APP_PATH, 'views'),
+            config: path.resolve(APP_PATH, 'config'),
+            common: path.resolve(APP_PATH, 'common'),
+            components: path.resolve(APP_PATH, 'components')
             // scripts: path.join(APP_PATH, 'scripts'),
             // styles: path.join(APP_PATH, 'styles'),
         }

@@ -8,7 +8,7 @@
     "start": "webpack-dev-server --mode development --open",
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
-    "build:dll": "webpack --mode production --config ./webpack.dll.config.js",
+    "build:dll": "webpack --mode development --config ./webpack.dll.config.js",
     "server": "nodemon mock-server"
   },
   "author": "deve",
