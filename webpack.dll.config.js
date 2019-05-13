@@ -11,7 +11,7 @@ const config = {
     },
     // 文件输出
     output: {
-        path: path.resolve(ROOT_PATH, 'dist'),
+        path: path.resolve(ROOT_PATH, 'dll'),
         publicPath: '/',
         library: '_dll_[name]',
         filename: '[name].dll.js'
@@ -20,7 +20,7 @@ const config = {
     plugins: [
         new DllPlugin({
             name: '_dll_[name]',
-            path: path.join(__dirname, 'dist', '[name].manifest.json')
+            path: path.join(__dirname, 'dll', '[name].manifest.json')
         })
     ]
 }

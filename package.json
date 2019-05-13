@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "webpack-dev-server --mode development --open",
-    "dev": "webpack --mode development",
-    "build": "webpack --mode production",
-    "build:dll": "webpack --mode development --config ./webpack.dll.config.js",
+    "start": "yarn dev",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open",
+    "build": "cross-env NODE_ENV=production webpack",
+    "build:dll": "cross-env NODE_ENV=development webpack --config ./webpack.dll.config.js",
     "server": "nodemon mock-server"
   },
   "author": "deve",
@@ -69,6 +69,7 @@
   "dependencies": {
     "antd": "^3.5.4",
     "axios": "^0.18.0",
+    "copy-webpack-plugin": "^5.0.3",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "lodash": "^4.17.11",

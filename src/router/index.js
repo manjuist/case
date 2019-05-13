@@ -11,7 +11,7 @@ function RouteList(){
             <Route path={url.home.path} component={Home} />
             <Route path={url.drawingBoard.path} component={DrawingBoard} />
             <Route path={url.flip.path} component={FLIP} />
-            <Redirect to={url.default.path} />
+            <Redirect to={url.info.path} />
         </Switch>
     )
 }
