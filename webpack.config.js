@@ -2,16 +2,17 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-// const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
+// const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin')
 // const { injectBabelPlugin } = require('react-app-rewired')
 
 const ROOT_PATH = path.resolve(__dirname)
 const APP_PATH = path.join(ROOT_PATH, 'src')
+const production = process.env.NODE_ENV
 
 const config = {
-    mode: 'development',
     devtool: 'source-map',
     entry: {
         app: path.join(APP_PATH, 'app.js')
@@ -19,7 +20,7 @@ const config = {
     output: {
         path: path.resolve(ROOT_PATH, 'dist'),
         publicPath: '/',
-        filename: '[name].bundle.js'
+        filename: '[name].[hash].js'
     },
     optimization: {
         runtimeChunk: {
@@ -30,12 +31,14 @@ const config = {
                 vendors: {
                     test: /[\\/]node_modules[\\/]/,
                     chunks: 'initial',
-                    name: 'vendor'
+                    name: 'vendor',
+                    priority: -10
                 },
                 default: {
-                    chunks: 'initial',
+                    chunks: 'async',
                     minChunks: 2,
-                    name: 'default'
+                    name: 'default',
+                    priority: -20
                 }
             }
         }
@@ -63,8 +66,6 @@ const config = {
             config: path.resolve(APP_PATH, 'config'),
             common: path.resolve(APP_PATH, 'common'),
             components: path.resolve(APP_PATH, 'components')
-            // scripts: path.join(APP_PATH, 'scripts'),
-            // styles: path.join(APP_PATH, 'styles'),
         }
     },
     module: {
@@ -109,7 +110,7 @@ const config = {
                 test: /\.(png|jpg|git|svg)$/,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: 'url-loader',
                         options: {
                             limit: 8192
                         }
@@ -131,22 +132,29 @@ const config = {
     },
     // 插件项
     plugins: [
-        new DllReferencePlugin({
-            manifest: require('./dist/react.manifest.json')
-        }),
-        // new CleanWebpackPlugin(['dist']),
+        // new DllReferencePlugin({
+        // manifest: require('./dll/react.manifest.json')
+        // }),
+        // new CopyWebpackPlugin([
+        // {
+        // from: 'dll/react.dll.js',
+        // to: '/react.dll.js'
+        // }
+        // ]),
+        new CleanWebpackPlugin(['dist']),
         new HtmlWebpackPlugin({
             title: 'index',
             template: 'index.html',
-            dllFile: 'react.dll.js'
+            // dllFile: 'react.dll.js',
+            inject: true
         }),
         new webpack.DefinePlugin({
             PRODUCTION: JSON.stringify('production'),
         }),
         new FriendlyErrorsPlugin(),
         new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css'
+            filename: '[name].[hash].css',
+            chunkFilename: '[name].[hash].css'
         }),
         // new webpack.optimize.UglifyJsPlugin(),
         new webpack.HotModuleReplacementPlugin(),

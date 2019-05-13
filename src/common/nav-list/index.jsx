@@ -4,12 +4,10 @@ import { Link } from 'react-router-dom';
 
 const NavList = ({ data }) => (
     <ul>
-        {data.map(
-            (cur, ind) => {
-                const { name, value } = cur
-                return (<li key={`nav-list${ind}`}><Link to={value}>{name}</Link></li>)
-            } 
-        )}
+        {data.map((cur, ind) => {
+            const { name, value } = cur
+            return (<li key={`nav-list${ind}`}><Link replace to={value}>{name}</Link></li>)
+        })}
     </ul>
 )
 

@@ -1,8 +1,6 @@
 import React from 'react';
 
 class FLIP extends React.Component {
-    listRef = React.createRef()
-
     state = {
         list: [1]
     }
@@ -10,6 +8,8 @@ class FLIP extends React.Component {
     componentDidMount(){
         this.updateItemInfo()
     }
+
+    listRef = React.createRef()
 
     updateItemInfo = () => {
         const { listRef } = this
@@ -22,14 +22,12 @@ class FLIP extends React.Component {
         return (
             <div ref={this.listRef}>
                 {
-                    list.map(
-                        (cur, ind) => (
-                            <div key={ind}>
-                                <div>{cur}</div>
-                                <div>del</div>
-                            </div>
-                        )
-                    )
+                    list.map((cur, ind) => (
+                        <div key={ind}>
+                            <div>{cur}</div>
+                            <div>del</div>
+                        </div>
+                    ))
                 }
             </div>
         )
