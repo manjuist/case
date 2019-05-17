@@ -8,11 +8,12 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const ROOT_PATH = path.resolve(__dirname)
+const ROOT_PATH = path.resolve(__dirname, '..')
 const APP_PATH = path.join(ROOT_PATH, 'src')
 const production = process.env.NODE_ENV
 
 const config = {
+    //context: path.resolve(ROOT_PATH),
     mode: production,
     devtool: 'source-map',
     entry: {
@@ -46,8 +47,9 @@ const config = {
     },
     devServer: {
         hot: true,
+        open: true,
         inline: true, // inline模式
-        contentBase: path.join(__dirname, 'dist'),
+        contentBase: path.join(ROOT_PATH, 'dist'),
         compress: true,
         port: 3000,
         proxy: {
@@ -58,8 +60,9 @@ const config = {
         }
     },
     resolve: {
-        modules: [path.resolve(__dirname, 'node_modules')],
-        extensions: ['.js', '.jsx', '.scss', '.less', '.css'],
+        mainFields: ['main'],
+        modules: [path.resolve(ROOT_PATH, 'node_modules')],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss', '.less', '.css'],
         alias: {
             '@': ROOT_PATH,
             app: APP_PATH,
@@ -70,21 +73,25 @@ const config = {
         }
     },
     module: {
-        // noParse: /react|antd|lodash/,
+        // noParse: [/react/, /antd/],
         rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /node_nodules/,
+                include: /src/,
                 loader: 'eslint-loader',
                 enforce: 'pre'
             },
             {
                 test: /\.jsx?$/,
-                exclude: /node_nodules/,
+                // exclude: /node_nodules/,
+                include: /src/,
                 loader: 'babel-loader'
             },
             {
                 test: /\.(css|scss)$/,
+                // exclude: /node_nodules/,
+                // include: /src/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
@@ -109,6 +116,8 @@ const config = {
             },
             {
                 test: /\.(png|jpg|git|svg)$/,
+                // exclude: /node_nodules/,
+                include: /src/,
                 use: [
                     {
                         loader: 'url-loader',
@@ -120,6 +129,8 @@ const config = {
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
+                // exclude: /node_nodules/,
+                include: /src/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -134,19 +145,19 @@ const config = {
     // 插件项
     plugins: [
         new DllReferencePlugin({
-            manifest: require('./dll/react.manifest.json')
+            manifest: require('../dll/react.manifest.json')
         }),
+        new CleanWebpackPlugin([path.resolve(ROOT_PATH, 'dist')]),
         new CopyWebpackPlugin([
             {
-                from: './dll/react.dll.js',
-                to: 'react.dll.js'
+                from: path.resolve(ROOT_PATH, 'dll/react.dll.js'),
+                to: path.resolve(ROOT_PATH, 'dist/react.dll.js')
             }
         ]),
-        new CleanWebpackPlugin(['dist']),
         new BundleAnalyzerPlugin(),
         new HtmlWebpackPlugin({
             title: 'index',
-            template: 'index.html',
+            template: path.resolve(ROOT_PATH, 'index.html'),
             dllFile: 'react.dll.js',
             inject: true
         }),
