@@ -7,6 +7,8 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const HappyPack = require('happypack')
+// const { injectBabelPlugin } = require('react-app-rewired')
 
 const ROOT_PATH = path.resolve(__dirname)
 const APP_PATH = path.join(ROOT_PATH, 'src')
@@ -46,6 +48,7 @@ const config = {
     },
     devServer: {
         hot: true,
+        open: true,
         inline: true, // inline模式
         contentBase: path.join(__dirname, 'dist'),
         compress: true,
@@ -58,8 +61,9 @@ const config = {
         }
     },
     resolve: {
+        mainFields: ['main'],
         modules: [path.resolve(__dirname, 'node_modules')],
-        extensions: ['.js', '.jsx', '.scss', '.less', '.css'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss', '.less', '.css'],
         alias: {
             '@': ROOT_PATH,
             app: APP_PATH,
@@ -70,21 +74,25 @@ const config = {
         }
     },
     module: {
-        // noParse: /react|antd|lodash/,
+        noParse: [/react/, /antd/],
         rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /node_nodules/,
+                include: /src/,
                 loader: 'eslint-loader',
                 enforce: 'pre'
             },
             {
                 test: /\.jsx?$/,
                 exclude: /node_nodules/,
+                include: /src/,
                 loader: 'babel-loader'
             },
             {
                 test: /\.(css|scss)$/,
+                exclude: /node_nodules/,
+                include: /src/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
@@ -109,6 +117,8 @@ const config = {
             },
             {
                 test: /\.(png|jpg|git|svg)$/,
+                exclude: /node_nodules/,
+                include: /src/,
                 use: [
                     {
                         loader: 'url-loader',
@@ -120,6 +130,8 @@ const config = {
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
+                exclude: /node_nodules/,
+                include: /src/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -136,10 +148,17 @@ const config = {
         new DllReferencePlugin({
             manifest: require('./dll/react.manifest.json')
         }),
+        new DllReferencePlugin({
+            manifest: require('./dll/antd.manifest.json')
+        }),
         new CopyWebpackPlugin([
             {
-                from: './dll/react.dll.js',
+                from: 'dll/react.dll.js',
                 to: 'react.dll.js'
+            },
+            {
+                from: 'dll/antd.dll.js',
+                to: 'antd.dll.js'
             }
         ]),
         new CleanWebpackPlugin(['dist']),
@@ -147,7 +166,8 @@ const config = {
         new HtmlWebpackPlugin({
             title: 'index',
             template: 'index.html',
-            dllFile: 'react.dll.js',
+            reactDll: 'react.dll.js',
+            antdDll: 'antd.dll.js',
             inject: true
         }),
         new webpack.DefinePlugin({

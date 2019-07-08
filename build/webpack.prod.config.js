@@ -13,11 +13,10 @@ const APP_PATH = path.join(ROOT_PATH, 'src')
 const production = process.env.NODE_ENV
 
 const config = {
-    context: path.resolve(ROOT_PATH),
     mode: production,
     devtool: 'source-map',
     entry: {
-        app: path.join(APP_PATH, 'app.js')
+        app: path.resolve(APP_PATH, 'app.js')
     },
     output: {
         path: path.resolve(ROOT_PATH, 'dist'),
@@ -60,8 +59,9 @@ const config = {
         }
     },
     resolve: {
+        mainFields: ['main'],
         modules: [path.resolve(ROOT_PATH, 'node_modules')],
-        extensions: ['.js', '.jsx', '.scss', '.less', '.css'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss', '.less', '.css'],
         alias: {
             '@': ROOT_PATH,
             app: APP_PATH,
@@ -72,26 +72,30 @@ const config = {
         }
     },
     module: {
-        // noParse: /react|antd|lodash/,
+        // noParse: [/react/, /antd/],
         rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /node_nodules/,
+                // include: /src/,
                 loader: 'eslint-loader',
                 enforce: 'pre'
             },
             {
                 test: /\.jsx?$/,
                 exclude: /node_nodules/,
+                // include: /src/,
                 loader: 'babel-loader'
             },
             {
                 test: /\.(css|scss)$/,
+                exclude: /node_nodules/,
+                // include: /src/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            publicPath: '../'
+                            publicPath: '../../'
                         }
                     },
                     {
@@ -111,6 +115,8 @@ const config = {
             },
             {
                 test: /\.(png|jpg|git|svg)$/,
+                exclude: /node_nodules/,
+                // include: /src/,
                 use: [
                     {
                         loader: 'url-loader',
@@ -122,6 +128,8 @@ const config = {
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
+                exclude: /node_nodules/,
+                // include: /src/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -136,24 +144,21 @@ const config = {
     // 插件项
     plugins: [
         new DllReferencePlugin({
-            manifest: require('../dll/react.manifest.json')
+            manifest: require('./dll/react.manifest.json')
         }),
         new CopyWebpackPlugin([
             {
-                from: path.resolve(ROOT_PATH, 'dll/react.dll.js'),
-                to: path.resolve(ROOT_PATH, 'dist/react.dll.js')
+                from: './dll/react.dll.js',
+                to: 'react.dll.js'
             }
         ]),
-        new CleanWebpackPlugin([path.resolve(ROOT_PATH, 'dist')]),
+        new CleanWebpackPlugin(['dist']),
         new BundleAnalyzerPlugin(),
         new HtmlWebpackPlugin({
             title: 'index',
             template: 'index.html',
             dllFile: 'react.dll.js',
             inject: true
-        }),
-        new webpack.DefinePlugin({
-            PRODUCTION: JSON.stringify('production'),
         }),
         new FriendlyErrorsPlugin(),
         new MiniCssExtractPlugin({
