@@ -7,14 +7,19 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+// optimize-css-assets-webpack-plugin
+// speed-measure-webpack-plugin
+//
+// contenthash
+// happypack   parallel-webpack
 
 const ROOT_PATH = path.resolve(__dirname, '..')
 const APP_PATH = path.join(ROOT_PATH, 'src')
-const production = process.env.NODE_ENV
+const mode = process.env.NODE_ENV
 
 const config = {
     context: path.resolve(ROOT_PATH),
-    mode: production,
+    mode,
     devtool: 'source-map',
     entry: {
         app: path.join(APP_PATH, 'app.js')
@@ -157,9 +162,11 @@ const config = {
         }),
         new FriendlyErrorsPlugin(),
         new MiniCssExtractPlugin({
+            // mode name?
             filename: '[name].[hash].css',
             chunkFilename: '[name].[hash].css'
         }),
+        // mode?
         // new webpack.optimize.UglifyJsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin()

@@ -1,5 +1,11 @@
 {
-    "presets": [ "env", "stage-0", "react" ],
+  "presets": [
+    ["env",{
+    modules:false,//preset-env导致tree shaking失效，禁用
+    }],
+    "stage-0",
+    "react"
+  ],
     "plugins": [
         "transform-decorators-legacy",
         [
