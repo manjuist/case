@@ -3,8 +3,10 @@ const DllPlugin = require('webpack/lib/DllPlugin');
 // const { injectBabelPlugin } = require('react-app-rewired')
 
 const ROOT_PATH = path.resolve(__dirname, '..')
+const mode = process.env.NODE_ENV
 
 const config = {
+    mode,
     context: path.resolve(ROOT_PATH),
     // 页面入口
     entry: {
