@@ -9,6 +9,7 @@ module.exports = {
         'ecmaVersion': 6,
         'ecmaFeatures': {
             'jsx': true,
+            "impliedStrict": true,
             'experimentalObjectRestSpread': true
         }
     },
@@ -21,7 +22,7 @@ module.exports = {
     'settings': {
         'import/resolver': {
             'webpack': {
-                config:'./build/webpack.dev.config.js'
+                'config':'./build/webpack.dev.config.js'
             }
         }
     },

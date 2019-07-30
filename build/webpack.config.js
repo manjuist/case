@@ -28,6 +28,7 @@ const config = {
         path: path.resolve(ROOT_PATH, 'dist'),
         publicPath: '/',
         filename: '[name].[hash].js'
+        // filename: '[name].[contenthash].js'
     },
     optimization: {
         runtimeChunk: {
@@ -93,16 +94,20 @@ const config = {
             {
                 test: /\.(css|scss)$/,
                 use: [
+                    // {
+                    // loader: MiniCssExtractPlugin.loader,
+                    // options: {
+                    // publicPath: '../'
+                    // }
+                    // }, 
                     {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            publicPath: '../'
-                        }
-                    },
-                    {
+                        loader: 'style-loader',
+                    }, {
                         loader: 'css-loader',
                         options: {
-                            sourceMap: true
+                            sourceMap: true,
+                            module: true,
+                            localIdentName: '[name]--[local]--[hash:base64:5]'
                         }
                     }, {
                         loader: 'sass-loader',
