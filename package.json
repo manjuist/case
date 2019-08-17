@@ -4,7 +4,7 @@
   "description": "react",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "start": "yarn dev",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --progress --config ./build/webpack.config.js",
     "dll": "cross-env NODE_ENV=development webpack --progress --config ./build/webpack.dll.config.js",
