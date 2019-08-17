@@ -54,6 +54,7 @@
     "mockjs": "^1.0.1-beta3",
     "node-sass": "^4.9.0",
     "nodemon": "^1.18.6",
+    "nyc": "^14.1.1",
     "postcss-cli": "^5.0.0",
     "postcss-loader": "^2.1.5",
     "sass-loader": "^7.0.1",
