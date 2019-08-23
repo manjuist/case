@@ -81,15 +81,23 @@ const config = {
         // noParse: /react|antd|lodash/,
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.(t|j)sx?$/,
                 exclude: /node_nodules/,
+                include: [APP_PATH],
                 loader: 'eslint-loader',
                 enforce: 'pre'
             },
             {
                 test: /\.jsx?$/,
                 exclude: /node_nodules/,
+                include: [APP_PATH],
                 loader: 'babel-loader'
+            },
+            {
+                test: /\.tsx?$/,
+                exclude: /node_nodules/,
+                include: [APP_PATH],
+                loader: 'ts-loader'
             },
             {
                 test: /\.(css|scss)$/,

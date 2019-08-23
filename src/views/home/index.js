@@ -5,7 +5,6 @@ import HomeLayout from 'app/layout/home'
 import Sider from 'common/sider'
 import HomeRoot from '../../router/home'
 import { showMoreHomeActionCreator } from './homeRedux'
-import './test'
 
 function Home(){
     return (
