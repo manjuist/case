@@ -7,7 +7,7 @@ function DrawingBoard(){
             <div> drawing-board </div>
             <canvas />
             {count}
-            <button onClick={() => { setCount(2) }}>AAA</button>
+            <button onClick={() => { setCount(pre => (pre + 1)) }}>AAA</button>
         </div>
     )
 }
