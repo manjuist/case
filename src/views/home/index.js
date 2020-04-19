@@ -6,12 +6,19 @@ import Sider from 'common/sider'
 import HomeRoot from '../../router/home'
 import { showMoreHomeActionCreator } from './homeRedux'
 
+function Sub(){
+    return 'subsub'
+}
+
 function Home(){
-    return (
+    return ([
         <HomeLayout
             sider={<Sider />}
             content={<HomeRoot />}
-        />
+            key={2}
+        />,
+        <Sub key={1} />
+    ]
     )
 }
 

@@ -13,7 +13,7 @@ const APP_PATH = path.join(ROOT_PATH, 'src')
 const production = process.env.NODE_ENV
 
 const config = {
-    //context: path.resolve(ROOT_PATH),
+    // context: path.resolve(ROOT_PATH),
     mode: production,
     devtool: 'source-map',
     entry: {

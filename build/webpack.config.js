@@ -67,7 +67,8 @@ const config = {
     },
     resolve: {
         modules: [path.resolve(ROOT_PATH, 'node_modules')],
-        extensions: ['.js', '.jsx', '.scss', '.less', '.css'],
+        extensions: ['.js', '.jsx', '.scss', '.css'],
+        mainFields: ['main'],
         alias: {
             '@': ROOT_PATH,
             app: APP_PATH,
@@ -84,14 +85,14 @@ const config = {
                 test: /\.(t|j)sx?$/,
                 exclude: /node_nodules/,
                 include: [APP_PATH],
-                loader: 'eslint-loader',
+                use: ['eslint-loader'],
                 enforce: 'pre'
             },
             {
                 test: /\.jsx?$/,
                 exclude: /node_nodules/,
                 include: [APP_PATH],
-                loader: 'babel-loader'
+                use: ['babel-loader']
             },
             {
                 test: /\.tsx?$/,

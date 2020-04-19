@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout } from 'antd';
+import ErrComp from 'app/views/err-comp'
 import 'common/css'
 
 const { Header, Content } = Layout
@@ -10,7 +11,9 @@ function Root({ header, content }) {
         <Layout>
             <Header>{header}</Header>
             <Layout>
-                <Content>{content}</Content>
+                <ErrComp>
+                    <Content>{content}</Content>
+                </ErrComp>
             </Layout>
         </Layout>
     )
