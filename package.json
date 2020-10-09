@@ -75,6 +75,7 @@
     "copy-webpack-plugin": "^5.0.3",
     "history": "^4.7.2",
     "husky": "^4.2.5",
+    "immer": "^6.0.3",
     "immutable": "^3.8.2",
     "lodash": "^4.17.11",
     "moment": "^2.22.1",

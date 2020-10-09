@@ -4,22 +4,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-// optimize-css-assets-webpack-plugin
-// speed-measure-webpack-plugin
-//
-// contenthash
-// happypack   parallel-webpack
 
 const ROOT_PATH = path.resolve(__dirname, '..')
 const APP_PATH = path.join(ROOT_PATH, 'src')
-const mode = process.env.NODE_ENV
+const production = process.env.NODE_ENV
 
 const config = {
-    context: path.resolve(ROOT_PATH),
-    mode,
+    // context: path.resolve(ROOT_PATH),
+    mode: production,
     devtool: 'source-map',
     entry: {
         app: path.join(APP_PATH, 'app.js')
@@ -28,7 +22,6 @@ const config = {
         path: path.resolve(ROOT_PATH, 'dist'),
         publicPath: '/',
         filename: '[name].[hash].js'
-        // filename: '[name].[contenthash].js'
     },
     optimization: {
         runtimeChunk: {
@@ -66,9 +59,9 @@ const config = {
         }
     },
     resolve: {
-        modules: [path.resolve(ROOT_PATH, 'node_modules')],
-        extensions: ['.js', '.jsx', '.scss', '.css'],
         mainFields: ['main'],
+        modules: [path.resolve(ROOT_PATH, 'node_modules')],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss', '.less', '.css'],
         alias: {
             '@': ROOT_PATH,
             app: APP_PATH,
@@ -79,44 +72,44 @@ const config = {
         }
     },
     module: {
-        // noParse: /react|antd|lodash/,
+        // noParse: [/react/, /antd/],
         rules: [
             {
-                test: /\.(t|j)sx?$/,
+                test: /\.jsx?$/,
                 exclude: /node_nodules/,
-                include: [APP_PATH],
-                use: ['eslint-loader'],
+                include: /src/,
+                loader: 'eslint-loader',
                 enforce: 'pre'
             },
             {
                 test: /\.jsx?$/,
-                exclude: /node_nodules/,
-                include: [APP_PATH],
-                use: ['babel-loader']
-            },
-            {
-                test: /\.tsx?$/,
-                exclude: /node_nodules/,
-                include: [APP_PATH],
-                loader: 'ts-loader'
+                // exclude: /node_nodules/,
+                include: /src/,
+                // loader: 'babel-loader'
+                use: [
+                    { loader: 'dv-loader' },
+                    { loader: 'babel-loader' }
+                ]
             },
             {
                 test: /\.(css|scss)$/,
+                // exclude: /node_nodules/,
+                // include: /src/,
                 use: [
-                    // {
-                    // loader: MiniCssExtractPlugin.loader,
-                    // options: {
-                    // publicPath: '../'
-                    // }
-                    // }, 
                     {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: '../'
+                        }
+                    }, {
                         loader: 'style-loader',
+                        options: {
+                            sourceMap: true
+                        }
                     }, {
                         loader: 'css-loader',
                         options: {
-                            sourceMap: true,
-                            // module: true,
-                            // localIdentName: '[name]--[local]--[hash:base64:5]'
+                            sourceMap: true
                         }
                     }, {
                         loader: 'sass-loader',
@@ -130,6 +123,8 @@ const config = {
             },
             {
                 test: /\.(png|jpg|git|svg)$/,
+                // exclude: /node_nodules/,
+                include: /src/,
                 use: [
                     {
                         loader: 'url-loader',
@@ -141,6 +136,8 @@ const config = {
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
+                // exclude: /node_nodules/,
+                include: /src/,
                 use: [
                     {
                         loader: 'file-loader',
@@ -157,17 +154,16 @@ const config = {
         new DllReferencePlugin({
             manifest: require('../dll/react.manifest.json')
         }),
+        new CleanWebpackPlugin([path.resolve(ROOT_PATH, 'dist')]),
         new CopyWebpackPlugin([
             {
                 from: path.resolve(ROOT_PATH, 'dll/react.dll.js'),
                 to: path.resolve(ROOT_PATH, 'dist/react.dll.js')
             }
         ]),
-        new CleanWebpackPlugin([path.resolve(ROOT_PATH, 'dist')]),
-        new BundleAnalyzerPlugin(),
         new HtmlWebpackPlugin({
             title: 'index',
-            template: 'index.html',
+            template: path.resolve(ROOT_PATH, 'index.html'),
             dllFile: 'react.dll.js',
             inject: true
         }),
@@ -176,11 +172,9 @@ const config = {
         }),
         new FriendlyErrorsPlugin(),
         new MiniCssExtractPlugin({
-            // mode name?
             filename: '[name].[hash].css',
             chunkFilename: '[name].[hash].css'
         }),
-        // mode?
         // new webpack.optimize.UglifyJsPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin()

@@ -1,3 +1,10 @@
 @charset "utf-8";
 
-@import 'reset';
+@import "reset";
+
+.root {
+  margin: 100px;
+}
+.por {
+  background: #ff0;
+}

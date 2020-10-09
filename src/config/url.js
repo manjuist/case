@@ -7,7 +7,7 @@ const url = {
     other: { name: 'other', path: '/home/other' },
     work: { name: 'work', path: '/home/work' },
     tech: { name: 'tech', path: '/home/tech' },
-    drawingBoard: { path: '/drawing-board', name: 'drawing-board' },
+    portal: { path: '/portal', name: 'portal' },
     flip: { name: 'flip', path: '/flip' }
 }
 

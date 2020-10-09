@@ -5817,6 +5817,11 @@ img-stats@0.4.2:
   dependencies:
     xmldom "0.1.16"
 
+immer@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.npmjs.org/immer/-/immer-6.0.3.tgz#94d5051cd724668160a900d66d85ec02816f29bd"
+  integrity sha512-12VvNrfSrXZdm/BJgi/KDW2soq5freVSf3I1+4CLunUM8mAGx2/0Njy0xBVzi5zewQZiwM7z1/1T+8VaI7NkmQ==
+
 immutable@^3, immutable@^3.7.4, immutable@^3.8.2:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
