@@ -1,4 +1,6 @@
 import React from 'react';
+import { put } from 'redux-saga/effects'
+import { connect } from 'react-redux'
 
 class FLIP extends React.Component {
     state = {
@@ -7,6 +9,7 @@ class FLIP extends React.Component {
 
     componentDidMount(){
         this.updateItemInfo()
+        put({ type: 'SHOW_MORE_HOME' })
     }
 
     listRef = React.createRef()
@@ -14,7 +17,7 @@ class FLIP extends React.Component {
     updateItemInfo = () => {
         const { listRef } = this
         const listItem = listRef.current.children
-        console.log(listItem)
+        Array.isArray(listItem)
     }
 
     render(){
@@ -34,4 +37,4 @@ class FLIP extends React.Component {
     }
 }
 
-export default FLIP
+export default connect(() => ({}), dispatch => ({ dispatch }))(FLIP)

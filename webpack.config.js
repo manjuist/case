@@ -73,13 +73,13 @@ const config = {
         rules: [
             {
                 test: /\.jsx?$/,
-                exclude: /node_nodules/,
+                exclude: /node_modules/,
                 loader: 'eslint-loader',
                 enforce: 'pre'
             },
             {
                 test: /\.jsx?$/,
-                exclude: /node_nodules/,
+                exclude: /node_modules/,
                 loader: 'babel-loader'
             },
             {
@@ -149,7 +149,7 @@ const config = {
             inject: true
         }),
         new webpack.DefinePlugin({
-            PRODUCTION: JSON.stringify('production'),
+            PRODUCTION: JSON.stringify(production),
         }),
         new FriendlyErrorsPlugin(),
         new MiniCssExtractPlugin({

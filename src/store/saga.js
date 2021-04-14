@@ -4,20 +4,16 @@
  * date: 2021-04-13
  */
 
-import { takeEvery, takeLatest, put, call } from 'redux-saga/effects';
+import { takeEvery, put } from 'redux-saga/effects';
 
-function* saga1(args){
-    const data = call(fetch, args);
-    yield put({ type: 'S1', data })
+function* saga1(){
+    console.log('saga1')
+    yield put({ type: 'SHOW_MORE', data: 666 })
 }
 
-function* allSage1(){
-    yield takeEvery('All', saga1)
+function* saga(){
+    console.log('saga')
+    yield takeEvery('SHOW_MORE_HOME', saga1)
 }
 
-function* allSage(){
-    yield takeLatest('All', saga1)
-}
-
-export { allSage1 };
-export default allSage;
+export default saga;
