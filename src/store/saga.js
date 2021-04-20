@@ -7,12 +7,10 @@
 import { takeEvery, put } from 'redux-saga/effects';
 
 function* saga1(){
-    console.log('saga1')
     yield put({ type: 'SHOW_MORE', payload: 666 })
 }
 
 function* saga(){
-    console.log('saga')
     yield takeEvery('SHOW_MORE_HOME', saga1)
 }
 

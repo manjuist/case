@@ -8,7 +8,7 @@ function Info({ showMoreHome }){
         <div>
             <div>马德玮</div>
             <div>deve_m@163.com</div>
-            <div>github.com/manjuist</div>
+            <div>github.com/mdvis</div>
             <button onClick={showMoreHome} >1</button>
         </div>
     )

@@ -8,7 +8,8 @@ const url = {
     work: { name: 'work', path: '/home/work' },
     tech: { name: 'tech', path: '/home/tech' },
     drawingBoard: { path: '/drawing-board', name: 'drawing-board' },
-    flip: { name: 'flip', path: '/flip' }
+    flip: { name: 'flip', path: '/flip' },
+    g6: { name: 'g6', path: '/g6' },
 }
 
 export default url
