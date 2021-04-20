@@ -3,33 +3,41 @@
  * author: Deve
  * date: 2021-04-19
  */
+
 class Canvas {
-    constructor(container){
-        this.container = container;
-        this.canvas = null
-        this.context = null
+    constructor(){
+        this.container = null;
+        this.canvas = null;
+        this.context = null;
     }
-    createCanvas(){
+
+    createCanvas=() => {
         const { canvas } = this;
+
         if (canvas) return canvas
+
         this.canvas = document.createElement('canvas');
         return this.canvas;
     }
-    getContext(){
-        const { canvas, context } = this;
+
+    getContext=() => {
+        const { context, createCanvas } = this;
+
         if (context) return context;
-        if (canvas){
-            this.context = canvas.getContext('2d');
-            return this.context;
-        }
-        return null
+
+        const canvas = createCanvas();
+        this.context = canvas.getContext('2d');
+        return this.context;
     }
-    init(){
-        const { createCanvas, container } = this;
+
+    init=(container) => {
+        const { createCanvas } = this;
         const [{ width }] = container.getClientRects();
         const canvas = createCanvas();
+
         canvas.width = width;
         canvas.height = 200;
+
         if (container && canvas){
             container.appendChild(canvas);
         }

@@ -1,3 +1,9 @@
+/**
+ * name: app.js
+ * author: Deve
+ * date: 2021-04-20
+ */
+
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'

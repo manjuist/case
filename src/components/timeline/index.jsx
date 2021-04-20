@@ -7,31 +7,28 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Canvas from './canvas';
+import Timeline from './timeline';
 
-const ref = React.createRef()
+const ref = React.createRef();
+const iCanvas = new Canvas();
 
-let canvas = null
-let context = null
-
-function Timeline({ data }){
+function TimelineContainer({ data }){
     useEffect(() => {
-        if (!canvas){
-            canvas = new Canvas()
-            const dom = ref.current;
-            canvas.init(dom);
+        const dom = ref.current;
+        iCanvas.init(dom);
+        const context = iCanvas.getContext();
+        Timeline.init({ context, data })
+    }, []);
 
-            console.log(context, canvas);
-        }
-    }, [])
-    return (<div ref={ref} />)
+    return (<div ref={ref} />);
 }
 
-Timeline.propTypes = {
+TimelineContainer.propTypes = {
     data: PropTypes.shape({
-
+        nodes: PropTypes.arrayOf(PropTypes.shape({})),
+        edges: PropTypes.arrayOf(PropTypes.shape({})),
     }).isRequired,
 }
 
-export const getCanvas = () => canvas;
-export const getContext = () => context;
-export default Timeline
+export { iCanvas };
+export default TimelineContainer;
