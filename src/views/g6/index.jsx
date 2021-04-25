@@ -21,11 +21,9 @@ const initdata = { ...data };
 let graph = null;
 
 function G6Demo(){
-    console.log(11111111)
     const ref = React.createRef();
     const [graphData, setGraphData] = useState(initdata);
     useEffect(() => {
-        console.log(1)
         const dom = ref.current;
         const [{ width }] = dom.getClientRects()
         if (!graph){
@@ -45,7 +43,6 @@ function G6Demo(){
         window.graph = graph
     }, [graphData])
     window.addItem = (a) => { graphData.nodes.push(a); setGraphData({ ...graphData, nodes: graphData.nodes }) }
-    console.log(graphData, 'pppppppp')
     return (
         <div>
             <div ref={ref} />

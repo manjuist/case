@@ -35,7 +35,6 @@ class Timeline {
         context.stroke();
         const line = (i, len) => {
             const x = i * (width / len)
-            console.log(x)
             context.beginPath();
             context.moveTo(x, 0);
             context.lineTo(x, 10);
