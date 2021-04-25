@@ -9,6 +9,7 @@ class Canvas {
         this.container = null;
         this.canvas = null;
         this.context = null;
+        this.ratio = window.devicePixelRatio;
     }
 
     createCanvas=() => {
@@ -31,12 +32,14 @@ class Canvas {
     }
 
     init=(container) => {
-        const { createCanvas } = this;
+        const { createCanvas, ratio } = this;
         const [{ width }] = container.getClientRects();
         const canvas = createCanvas();
 
-        canvas.width = width;
-        canvas.height = 200;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = '200px';
+        canvas.width = width * ratio;
+        canvas.height = 200 * ratio;
 
         if (container && canvas){
             container.appendChild(canvas);
