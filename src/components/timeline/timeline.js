@@ -42,6 +42,9 @@ class Timeline {
         }
         for (let i = 0, len = 31; i < len; i++) {
             line(i, len)
+            const x = i * (width / len)
+            context.textAlign = 'center';
+            context.fillText(`${i + 1}`, x, 20, 24);
         }
     }
 
@@ -67,6 +70,7 @@ class Timeline {
             currentPoint: [x, y],
         } = this;
         context.font = '24px monospace';
+        context.textAlign = 'left';
         context.fillText(label, x, y - 6);
     }
 
