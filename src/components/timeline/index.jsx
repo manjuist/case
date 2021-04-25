@@ -11,16 +11,21 @@ import Timeline from './timeline';
 
 const ref = React.createRef();
 const iCanvas = new Canvas();
+let timelineInstance = null;
 
 function TimelineContainer({ data }){
     useEffect(() => {
         const dom = ref.current;
         iCanvas.init(dom);
         const context = iCanvas.getContext();
-        Timeline.init({ context, data })
+        timelineInstance = Timeline.init({ context, data })
     }, []);
 
-    return (<div ref={ref} />);
+    if (timelineInstance){
+        timelineInstance.render()
+    }
+
+    return (<div id="container" ref={ref} />);
 }
 
 TimelineContainer.propTypes = {
