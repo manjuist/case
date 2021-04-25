@@ -8,11 +8,30 @@ import moment from 'moment';
 
 window.moment = moment;
 class Timeline {
-    constructor({ context, data, config = { padding: [10, 10, 10, 10] } }){
+    constructor({
+        context, data, config = { padding: [10, 10, 10, 10] }, inPath 
+    }){
         this.data = data;
         this.context = context;
         this.config = config;
         this.currentPoint = [0, 0];
+        this.inPath = inPath
+    }
+
+    drawLine([x, y], [x1, y1]){
+        const { context } = this;
+        // context.lineWidth = 20;
+        context.beginPath();
+        context.moveTo(x, y);
+        // context.lineTo(x1, y1);
+        // context.closePath();
+        // context.stroke();
+        context.rect(x, y, x1, y1);
+        context.closePath();
+        context.stroke();
+        if (this.eventPos){
+            console.log(this.inPath(this.eventPos))
+        }
     }
 
     clearup(){
@@ -29,16 +48,10 @@ class Timeline {
             context, 
             context: { canvas: { width } },
         } = this;
-        context.beginPath();
-        context.moveTo(0, 0);
-        context.lineTo(width, 0);
-        context.stroke();
+        this.drawLine([0, 0], [width, 0])
         const line = (i, len) => {
             const x = i * (width / len)
-            context.beginPath();
-            context.moveTo(x, 0);
-            context.lineTo(x, 10);
-            context.stroke();
+            this.drawLine([x, 0], [x, 10])
         }
         for (let i = 0, len = 31; i < len; i++) {
             line(i, len)
@@ -57,10 +70,7 @@ class Timeline {
         } = this;
         window.ctx = context;
         const deliv = (height - 20) / nodes.length
-        context.beginPath();
-        context.moveTo(x, y + deliv);
-        context.lineTo(x + width, y + deliv);
-        context.stroke();
+        this.drawLine([x, y + deliv], [x + width, y + deliv])
         this.currentPoint = [x, y + deliv];
     }
 
@@ -75,15 +85,16 @@ class Timeline {
     }
 
     render(config){
+        if (config){
+            const { eventPos } = config
+            this.eventPos = eventPos
+        }
         const {
-            data: { nodes, edges },
-            context: { canvas: { height, width } },
+            data: { nodes },
         } = this;
         this.clearup();
         const newConf = { ...this.config, ...config };
         this.config = newConf;
-        const { padding } = newConf;
-        console.log(nodes, edges, width, height, padding);
         this.drawScale()
         nodes.forEach((item) => { 
             this.drawEntityLine();

@@ -31,7 +31,18 @@ class Canvas {
         return this.context;
     }
 
-    init=(container) => {
+    inPath=([x, y]) => {
+        const context = this.getContext()
+        return context.isPointInPath(x, y)
+    }
+
+    addEvent=(cb) => {
+        this.canvas.addEventListener('click', (e) => {
+            cb(e)
+        }, false)
+    }
+
+    init=(container, cb) => {
         const { createCanvas, ratio } = this;
         const [{ width }] = container.getClientRects();
         const canvas = createCanvas();
@@ -43,6 +54,7 @@ class Canvas {
 
         if (container && canvas){
             container.appendChild(canvas);
+            if (cb) { cb(canvas) }
         }
     }
 }
