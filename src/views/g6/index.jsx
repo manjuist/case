@@ -43,10 +43,17 @@ function G6Demo(){
         window.graph = graph
     }, [graphData])
     window.addItem = (a) => { graphData.nodes.push(a); setGraphData({ ...graphData, nodes: graphData.nodes }) }
+
+    function setSelect(currentNodes){
+        const allNodes = graph.getNodes()
+        const list = allNodes.filter(item => currentNodes.includes(item.getModel().id))
+        list.forEach(item => graph.selected(item))
+    }
+
     return (
         <div>
             <div ref={ref} />
-            <Timeline data={graphData} />
+            <Timeline data={graphData} selectHandler={setSelect} />
         </div>
     )
 }

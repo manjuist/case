@@ -9,29 +9,27 @@ import moment from 'moment';
 window.moment = moment;
 class Timeline {
     constructor({
-        context, data, config = { padding: [10, 10, 10, 10] }, inPath 
+        context, data, config = { padding: [10, 10, 10, 10] }, inPath, selectHandler
     }){
         this.data = data;
         this.context = context;
         this.config = config;
         this.currentPoint = [0, 0];
-        this.inPath = inPath
+        this.inPath = inPath;
+        this.selectHandler = selectHandler;
     }
 
-    drawLine([x, y], [x1, y1]){
+    drawLine([x, y], [x1, y1], normal){
         const { context } = this;
-        // context.lineWidth = 20;
         context.beginPath();
         context.moveTo(x, y);
-        // context.lineTo(x1, y1);
-        // context.closePath();
-        // context.stroke();
-        context.rect(x, y, x1, y1);
+        if (normal){
+            context.lineTo(x1, y1);
+        } else {
+            context.rect(x, y, x1 - x, 2);
+        }
         context.closePath();
         context.stroke();
-        if (this.eventPos){
-            console.log(this.inPath(this.eventPos))
-        }
     }
 
     clearup(){
@@ -48,20 +46,28 @@ class Timeline {
             context, 
             context: { canvas: { width } },
         } = this;
-        this.drawLine([0, 0], [width, 0])
+        this.drawLine([0, 0], [width, 0], true)
         const line = (i, len) => {
             const x = i * (width / len)
-            this.drawLine([x, 0], [x, 10])
+            this.drawLine([x, 0], [x, 10], true)
         }
         for (let i = 0, len = 31; i < len; i++) {
             line(i, len)
             const x = i * (width / len)
+            context.font = '24px monospace';
             context.textAlign = 'center';
             context.fillText(`${i + 1}`, x, 20, 24);
         }
     }
 
-    drawEntityLine(){
+    currentClick(item){
+        console.log(this.inPath(this.eventPos))
+        if (this.inPath(this.eventPos)){
+            this.selectHandler([item.id])
+        }
+    }
+
+    drawEntityLine(item){
         const { 
             context,
             context: { canvas: { width, height } },
@@ -71,6 +77,9 @@ class Timeline {
         window.ctx = context;
         const deliv = (height - 20) / nodes.length
         this.drawLine([x, y + deliv], [x + width, y + deliv])
+        if (this.eventPos){
+            this.currentClick(item)
+        }
         this.currentPoint = [x, y + deliv];
     }
 
@@ -97,7 +106,7 @@ class Timeline {
         this.config = newConf;
         this.drawScale()
         nodes.forEach((item) => { 
-            this.drawEntityLine();
+            this.drawEntityLine(item);
             this.drawEntityTitle(item);
         })
     }

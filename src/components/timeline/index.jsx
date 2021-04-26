@@ -16,7 +16,7 @@ let timelineInstance = null;
 
 const { inPath, addEvent } = iCanvas;
 
-function TimelineContainer({ data }){
+function TimelineContainer({ data, selectHandler }){
     useEffect(() => {
         const dom = ref.current;
         iCanvas.init(dom, (canvas) => {
@@ -27,7 +27,9 @@ function TimelineContainer({ data }){
             })
         });
         const context = iCanvas.getContext();
-        timelineInstance = Timeline.init({ context, data, inPath })
+        timelineInstance = Timeline.init({
+            context, data, inPath, selectHandler 
+        })
     }, []);
 
     if (timelineInstance){
@@ -42,6 +44,7 @@ TimelineContainer.propTypes = {
         nodes: PropTypes.arrayOf(PropTypes.shape({})),
         edges: PropTypes.arrayOf(PropTypes.shape({})),
     }).isRequired,
+    selectHandler: PropTypes.func.isRequired,
 }
 
 export { iCanvas };

@@ -32,13 +32,19 @@ class Canvas {
     }
 
     inPath=([x, y]) => {
+        const ratio = window.devicePixelRatio;
         const context = this.getContext()
-        return context.isPointInPath(x, y)
+        return context.isPointInPath(x * ratio, y * ratio)
     }
 
     addEvent=(cb) => {
         this.canvas.addEventListener('click', (e) => {
             cb(e)
+        }, false)
+        this.canvas.addEventListener('mousewheel', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            console.log(e)
         }, false)
     }
 
