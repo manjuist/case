@@ -17,9 +17,29 @@ G6.Graph.prototype.selected = function (item){
     })
 }
 
-const initdata = { ...data };
-let graph = null;
+const nodelist = []
+const num = (min = 0, max = 2000) => min + (((max - min) + 1) * Math.random())
+window.nodes = (icount = 50) => {
+    let count = icount
+    while (count > 0){
+        count -= 1;
+        nodelist.push({
+            id: `n${count}`,
+            label: `n${count}`,
+            x: num(),
+            y: num(),
+        })
+    }
+    window.graph.data({ nodes: nodelist });
+    window.graph.render();
+}
 
+
+let initdata = { ...data };
+if (nodelist.length){
+    initdata = { ...data, nodes: nodelist };
+}
+let graph = null;
 function G6Demo(){
     const ref = React.createRef();
     const [graphData, setGraphData] = useState(initdata);
@@ -36,6 +56,7 @@ function G6Demo(){
                 modes: {
                     default: ['click-select', 'drag-canvas', 'zoom-canvas', 'drag-node'],
                 },
+                gpuEnabled: true,
             });
         }
         graph.data(graphData);

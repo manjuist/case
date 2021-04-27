@@ -44,7 +44,7 @@ class Canvas {
         this.canvas.addEventListener('mousewheel', (e) => {
             e.preventDefault()
             e.stopPropagation()
-            console.log(e)
+            cb(e)
         }, false)
     }
 

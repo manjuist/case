@@ -7,6 +7,21 @@
 import moment from 'moment';
 
 window.moment = moment;
+
+let time
+let timeType = 'h'
+const timeTypeMap = {
+    h: {
+        name: 'h', value: 12, next: 'd', pre: '', max: 24, min: 6, 
+    },
+    d: {
+        name: 'd', value: 15, next: 'm', pre: 'h', max: 31, min: 7
+    },
+    m: {
+        name: 'm', value: 6, next: '', pre: 'd', max: 12, min: 3
+    },
+}
+
 class Timeline {
     constructor({
         context, data, config = { padding: [10, 10, 10, 10] }, inPath, selectHandler
@@ -41,7 +56,39 @@ class Timeline {
         this.currentPoint = [0, 0];
     }
 
-    drawScale(){
+    drawScale(deltaY){
+        let curTime = timeTypeMap[timeType];
+        if (time === undefined){
+            time = curTime.value
+        }
+        if (time < curTime.min){
+            time = curTime.min
+            const preTime = curTime
+            curTime = timeTypeMap[preTime.pre]
+            if (!curTime) { 
+                curTime = preTime
+            } else {
+                timeType = preTime.pre;
+                time = curTime.value
+            }
+        }
+        if (time > curTime.max){
+            time = curTime.max
+            const preTime = curTime
+            curTime = timeTypeMap[preTime.next]
+            if (!curTime) { 
+                curTime = preTime
+            } else {
+                timeType = preTime.next;
+                time = curTime.value
+            }
+        }
+        if (deltaY > 0){
+            time -= 1;
+        } 
+        if (deltaY < 0){
+            time += 1;
+        }
         const {
             context, 
             context: { canvas: { width } },
@@ -51,12 +98,12 @@ class Timeline {
             const x = i * (width / len)
             this.drawLine([x, 0], [x, 10], true)
         }
-        for (let i = 0, len = 31; i < len; i++) {
-            line(i, len)
-            const x = i * (width / len)
+        for (let i = 0, len = time; i < len; i++) {
+            line(i, time)
+            const x = i * (width / time)
             context.font = '24px monospace';
             context.textAlign = 'center';
-            context.fillText(`${i + 1}`, x, 20, 24);
+            context.fillText(`${i + 1}${curTime.name}`, x, 20, 30);
         }
     }
 

@@ -22,7 +22,14 @@ function TimelineContainer({ data, selectHandler }){
         iCanvas.init(dom, (canvas) => {
             addEvent((e) => {
                 if (timelineInstance){
-                    timelineInstance.render({ eventPos: getCanvasPoint(canvas, [e.clientX, e.clientY]) })
+                    console.log(e)
+                    if (e.type.includes('wheel')){
+                        timelineInstance.drawScale(e.deltaY)
+                        timelineInstance.render()
+                    }
+                    if (e.type.includes('click')){
+                        timelineInstance.render({ eventPos: getCanvasPoint(canvas, [e.clientX, e.clientY]) })
+                    }
                 }
             })
         });
