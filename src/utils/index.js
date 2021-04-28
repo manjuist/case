@@ -4,11 +4,13 @@
  * date: 2021-04-25
  */
 
-function getElementRect(element) {
+export moment from 'moment';
+
+export function getElementRect(element) {
     return element.getBoundingClientRect();
 }
 
-function getCanvasPoint(
+export function getCanvasPoint(
     canvas,
     point,
 ) {
@@ -16,6 +18,3 @@ function getCanvasPoint(
     const { x: canvasX, y: canvasY } = getElementRect(canvas);
     return [x - canvasX, y - canvasY];
 }
-
-export { getCanvasPoint };
-export default { getCanvasPoint }

@@ -4,12 +4,11 @@
  * date: 2021-04-19
  */
 
-class Canvas {
+class ICanvas {
     constructor(){
         this.container = null;
         this.canvas = null;
         this.context = null;
-        this.ratio = window.devicePixelRatio;
     }
 
     createCanvas=() => {
@@ -31,38 +30,13 @@ class Canvas {
         return this.context;
     }
 
-    inPath=([x, y]) => {
-        const ratio = window.devicePixelRatio;
+    inPath=([x, y], path) => {
         const context = this.getContext()
-        return context.isPointInPath(x * ratio, y * ratio)
-    }
-
-    addEvent=(cb) => {
-        this.canvas.addEventListener('click', (e) => {
-            cb(e)
-        }, false)
-        this.canvas.addEventListener('mousewheel', (e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            cb(e)
-        }, false)
-    }
-
-    init=(container, cb) => {
-        const { createCanvas, ratio } = this;
-        const [{ width }] = container.getClientRects();
-        const canvas = createCanvas();
-
-        canvas.style.width = `${width}px`;
-        canvas.style.height = '200px';
-        canvas.width = width * ratio;
-        canvas.height = 200 * ratio;
-
-        if (container && canvas){
-            container.appendChild(canvas);
-            if (cb) { cb(canvas) }
+        if (path){
+            return context.isPointInPath(path, x, y)
         }
+        return context.isPointInPath(x, y)
     }
 }
 
-export default Canvas
+export default ICanvas

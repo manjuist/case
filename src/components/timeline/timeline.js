@@ -4,15 +4,25 @@
  * date: 2021-04-20
  */
 
-import moment from 'moment';
+import ICanvas from './canvas'
+import initConf from './config'
+import { getCanvasPoint, getElementRect } from '../../utils'
 
-window.moment = moment;
+/**
+ * 获取指定元素宽度.
+ *
+ * @param {HTMLDivElement} container
+ */
+function getRectWidth(container){
+    const { width } = getElementRect(container);
+    return width;
+}
 
 let time
 let timeType = 'h'
 const timeTypeMap = {
     h: {
-        name: 'h', value: 12, next: 'd', pre: '', max: 24, min: 6, 
+        name: 'h', value: 12, next: 'd', pre: '', max: 24, min: 6,
     },
     d: {
         name: 'd', value: 15, next: 'm', pre: 'h', max: 31, min: 7
@@ -22,16 +32,22 @@ const timeTypeMap = {
     },
 }
 
+const myCanvas = new ICanvas()
+
 class Timeline {
     constructor({
-        context, data, config = { padding: [10, 10, 10, 10] }, inPath, selectHandler
+        container,
+        data,
+        onClick,
+        config,
     }){
         this.data = data;
-        this.context = context;
-        this.config = config;
+        this.config = { ...initConf, ...config };
+        this.onClick = onClick;
         this.currentPoint = [0, 0];
-        this.inPath = inPath;
-        this.selectHandler = selectHandler;
+        this.container = container;
+        this.context = myCanvas.getContext();
+        this.ratio = window.devicePixelRatio;
     }
 
     drawLine([x, y], [x1, y1], normal){
@@ -49,48 +65,61 @@ class Timeline {
 
     clearup(){
         const {
-            context, 
+            context,
             context: { canvas: { width, height } },
         } = this;
         context.clearRect(0, 0, width, height)
         this.currentPoint = [0, 0];
     }
 
+    /**
+     * 时间轴刻度线.
+     *
+     * @param {Number} deltaY
+     */
     drawScale(deltaY){
+        // timeType值可以是，时h,日d,月m,年y
+        // 当前时间时间映射信息
+        // max为当前单位最大值，min为最小值，value为中间值
+        // 例如，timeType为月m时，max=12，min=1, value=6
         let curTime = timeTypeMap[timeType];
+        // time为刻度数量
         if (time === undefined){
             time = curTime.value
         }
+        // 刻度数小于最小值时切换更小单位，如月m->日d
         if (time < curTime.min){
             time = curTime.min
             const preTime = curTime
             curTime = timeTypeMap[preTime.pre]
-            if (!curTime) { 
+            if (!curTime) {
                 curTime = preTime
             } else {
                 timeType = preTime.pre;
                 time = curTime.value
             }
         }
+        // 刻度数大于最大值时切换更大单位，如日d->月m
         if (time > curTime.max){
             time = curTime.max
             const preTime = curTime
             curTime = timeTypeMap[preTime.next]
-            if (!curTime) { 
+            if (!curTime) {
                 curTime = preTime
             } else {
                 timeType = preTime.next;
                 time = curTime.value
             }
         }
+        // 滚轮方向决定刻度增减
         if (deltaY > 0){
             time -= 1;
-        } 
+        }
         if (deltaY < 0){
             time += 1;
         }
         const {
-            context, 
+            context,
             context: { canvas: { width } },
         } = this;
         this.drawLine([0, 0], [width, 0], true)
@@ -107,23 +136,43 @@ class Timeline {
         }
     }
 
+    inPath([x, y]){
+        const { ratio } = this;
+        return myCanvas.inPath([x * ratio, y * ratio])
+    }
+
     currentClick(item){
-        console.log(this.inPath(this.eventPos))
         if (this.inPath(this.eventPos)){
-            this.selectHandler([item.id])
+            this.onClick([item.id])
         }
     }
 
+    drawDot(x, y){
+        const { context } = this;
+        context.beginPath();
+        context.moveTo(x, y);
+        context.arc(x, y, 10, 0, 2 * Math.PI);
+        context.closePath();
+        context.fill();
+    }
+
     drawEntityLine(item){
-        const { 
-            context,
+        const {
             context: { canvas: { width, height } },
             data: { nodes },
             currentPoint: [x, y],
+            config: { scaleHeight, entityTitleWidth, padding: [, right, bottom] }
         } = this;
-        window.ctx = context;
-        const deliv = (height - 20) / nodes.length
-        this.drawLine([x, y + deliv], [x + width, y + deliv])
+
+        const deliv = (height - scaleHeight - bottom) / nodes.length;
+        const contentStartX = x + entityTitleWidth;
+        const contentStartY = y + deliv + scaleHeight;
+        const contentEndX = (x + width) - right;
+        const contentEndY = y + deliv + scaleHeight;
+
+        this.drawDot(contentStartX, contentStartY);
+
+        this.drawLine([contentStartX, contentStartY], [contentEndX, contentEndY])
         if (this.eventPos){
             this.currentClick(item)
         }
@@ -131,13 +180,18 @@ class Timeline {
     }
 
     drawEntityTitle({ label }){
-        const { 
+        const {
             context,
             currentPoint: [x, y],
+            config: { scaleHeight, entityTitleWidth }
         } = this;
+
+        const textStartX = x + entityTitleWidth
+        const textStartY = y + scaleHeight
+
         context.font = '24px monospace';
-        context.textAlign = 'left';
-        context.fillText(label, x, y - 6);
+        context.textAlign = 'right';
+        context.fillText(label, textStartX, textStartY, entityTitleWidth);
     }
 
     render(config){
@@ -152,15 +206,52 @@ class Timeline {
         const newConf = { ...this.config, ...config };
         this.config = newConf;
         this.drawScale()
-        nodes.forEach((item) => { 
+        nodes.forEach((item) => {
             this.drawEntityLine(item);
             this.drawEntityTitle(item);
         })
     }
+
+    init(){
+        const {
+            container,
+            ratio,
+            config: {
+                width: confWidth,
+                height: confHeight
+            }
+        } = this;
+        const canvas = myCanvas.createCanvas();
+        const canvasWidth = confWidth || getRectWidth(container);
+
+        canvas.style.width = `${canvasWidth}px`;
+        canvas.style.height = `${confHeight}px`;
+        canvas.width = canvasWidth * ratio;
+        canvas.height = confHeight * ratio;
+
+        if (container && canvas){
+            container.appendChild(canvas);
+        }
+    }
+
+    addEvent(){
+        const { context: { canvas } } = this;
+        canvas.addEventListener('click', (e) => {
+            this.render({ eventPos: getCanvasPoint(canvas, [e.clientX, e.clientY]) })
+        }, false)
+        canvas.addEventListener('mousewheel', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            this.drawScale(e.deltaY)
+            this.render()
+        }, false)
+    }
 }
 
-Timeline.init = function (arg){
-    const timeline = new Timeline(arg);
+Timeline.init = function (conf){
+    const timeline = new Timeline(conf);
+    timeline.init()
+    timeline.addEvent()
     timeline.render()
     return timeline;
 }
