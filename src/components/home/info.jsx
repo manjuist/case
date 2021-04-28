@@ -1,21 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { showMoreHomeActionCreator } from '../../views/home/homeRedux'
 
-function Info({ showMoreHome }){
+function Info(){
     return (
-        <div>
-            <div>马德玮</div>
-            <div>deve_m@163.com</div>
-            <div>github.com/mdvis</div>
-            <button onClick={showMoreHome} >1</button>
-        </div>
+        <div>info</div>
     )
-}
-
-Info.propTypes = {
-    showMoreHome: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({

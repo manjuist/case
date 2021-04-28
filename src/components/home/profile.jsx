@@ -2,9 +2,7 @@ import React from 'react';
 
 function Profile(){
     return (
-        <div>
-            <div>前端</div>
-        </div>
+        <div>profile</div>
     )
 }
 
