@@ -21,7 +21,7 @@ function TimelineContainer({ data, onClick }){
         })
     }, []);
 
-    return (<div id="container" ref={ref} />);
+    return (<div id="container" ref={ref} style={{ border: '1px solid red' }} />);
 }
 
 TimelineContainer.propTypes = {

@@ -5,8 +5,8 @@
  */
 
 export default {
-    padding: [10, 10, 10, 10],
-    scaleHeight: 20,
+    padding: [20, 10, 10, 20],
+    scaleHeight: 40,
     entityTitleWidth: 50,
 }
 

@@ -18,7 +18,7 @@ G6.Graph.prototype.selected = function (item){
 
 let count = 15;
 const nodes = []
-const num = (min = 0, max = 2000) => min + (((max - min) + 1) * Math.random())
+const num = (min = 0, max = 200) => min + (((max - min) + 1) * Math.random())
 while (count > 0){
     count -= 1;
     nodes.push({
