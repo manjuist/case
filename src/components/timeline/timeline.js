@@ -45,15 +45,6 @@ class Timeline {
         })
     }
 
-    clearup(){
-        const {
-            context,
-            context: { canvas: { width, height } },
-        } = this;
-        context.clearRect(0, 0, width, height)
-        this.currentPoint = [0, 0];
-    }
-
     /**
      * 时间轴刻度线.
      *
@@ -120,22 +111,30 @@ class Timeline {
         context.fillText(label, ...layout.getStartPoint(textStartX, textStartY), entityTitleWidth);
     }
 
+    drawContent = () => {
+        const {
+            data: { nodes },
+            config: { scaleHeight },
+            layout,
+        } = this;
+        myCanvas.clearup(...layout.getStartPoint(0, scaleHeight));
+        nodes.forEach((item) => {
+            this.drawEntityLine(item);
+            this.drawEntityTitle(item);
+        })
+        this.currentPoint = [0, 0];
+    }
+
     render(config){
         if (config){
             const { eventPos } = config
             this.eventPos = eventPos
         }
-        const {
-            data: { nodes }, scale
-        } = this;
-        this.clearup();
+        const { scale } = this;
         const newConf = { ...this.config, ...config };
         this.config = newConf;
         scale.drawScale()
-        nodes.forEach((item) => {
-            this.drawEntityLine(item);
-            this.drawEntityTitle(item);
-        })
+        this.drawContent()
     }
 
     init(){
@@ -161,7 +160,7 @@ class Timeline {
     }
 
     addEvent(){
-        const { context: { canvas }, scale } = this;
+        const { context: { canvas }, scale, container } = this;
         const moveCallback = (e) => { console.log(e) }
         canvas.addEventListener('click', (e) => {
             this.render({ eventPos: getCanvasPoint(canvas, [e.clientX, e.clientY]) })
@@ -169,14 +168,16 @@ class Timeline {
         canvas.addEventListener('mousewheel', (e) => {
             e.preventDefault()
             e.stopPropagation()
-            scale.drawScale(e.deltaY)
-            this.render()
+            scale.drawScale(e.deltaY, getCanvasPoint(canvas, [e.clientX, e.clientY]))
+            this.drawContent()
         }, false)
         canvas.addEventListener('mousedown', (e) => {
+            container.style.cursor = 'move'
             moveCallback(e)
             canvas.addEventListener('mousemove', moveCallback, false)
         }, false)
         canvas.addEventListener('mouseup', (e) => {
+            container.style.cursor = ''
             moveCallback(e)
             canvas.removeEventListener('mousemove', moveCallback, false)
         }, false)

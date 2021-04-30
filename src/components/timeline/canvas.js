@@ -10,6 +10,14 @@ class ICanvas {
         this.context = null;
     }
 
+    clearup(x = 0, y = 0, w, h){
+        const {
+            context,
+            context: { canvas: { width, height } },
+        } = this;
+        context.clearRect(x, y, w || width, h || height)
+    }
+
     createCanvas=() => {
         const { canvas } = this;
 
