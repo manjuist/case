@@ -8,7 +8,7 @@ class Layout {
     constructor(config){
         this.config = config
     }
-    getStartPoint(x, y){
+    getStartPoint(x = 0, y = 0){
         const { config: { padding: [top, , , left] } } = this;
         return [x + left, y + top] 
     }
