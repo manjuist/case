@@ -6,74 +6,90 @@
 import ICanvas from './canvas';
 import Layout from './layout';
 
-let dividerWidth = 50;
-// const currentYear = 2021
-// const currentMonth = 4
-// const currentDay = 31
-// const currentHour = 20
+let dividerWidth = 100;
+// const currentYear = 2021;
+// const currentMonth = 4;
+// const currentDay = 31;
+// const currentHour = 20;
 
-const timeType = 'h'
+const timeType = 'h';
 const timeTypeMap = {
     h: {
         name: 'h', value: 12, next: 'd', pre: '', max: 24, min: 6,
     },
     d: {
-        name: 'd', value: 15, next: 'm', pre: 'h', max: 31, min: 7
+        name: 'd', value: 15, next: 'm', pre: 'h', max: 31, min: 7,
     },
     m: {
-        name: 'm', value: 6, next: '', pre: 'd', max: 12, min: 3
+        name: 'm', value: 6, next: '', pre: 'd', max: 12, min: 3,
     },
 }
-const time = timeTypeMap[timeType]
+const time = timeTypeMap[timeType];
 
-const myCanvas = ICanvas.getInstance()
+const myCanvas = ICanvas.getInstance();
 
 class Scale {
     constructor({ context, config }){
+        const layout = new Layout(config);
+
         this.context = context;
         this.config = config;
-        this.layout = new Layout(config);
+        this.layout = layout;
         this.ratio = window.devicePixelRatio;
+        this.startPoint = layout.getStartPoint(0, config.scaleHeight);
     }
 
     handleWheel = (deltaY) => {
         // 滚轮方向决定刻度增减
         if (deltaY > 0){
-            dividerWidth -= 1;
+            dividerWidth -= 10;
         }
         if (deltaY < 0){
-            dividerWidth += 1;
+            dividerWidth += 10;
         }
     }
 
-    drawScale=(deltaY, point = [0, 0]) => {
-        // const [x, y] = point
-        const {
-            context,
-            context: { canvas: { width } },
-            config: { scaleHeight },
-            layout,
-            handleWheel,
-            ratio,
-        } = this;
-        myCanvas.clearup(0, 0, undefined, scaleHeight + 30);
-        // console.log(x * ratio, y * ratio)
-        console.log(point, ratio)
-        handleWheel(deltaY);
-        const startPoint = layout.getStartPoint(0, scaleHeight);
-        myCanvas.drawLine(...startPoint, ...layout.getStartPoint(width, scaleHeight))
-        const line = (i) => {
-            const xp = i * dividerWidth
-            myCanvas.drawLine(...layout.getStartPoint(xp, 0), ...layout.getStartPoint(xp, scaleHeight))
+    drawScale=(deltaY, wheelPoint = [0, 0]) => {
+        const line = (i, layout, scaleHeight, xp) => {
+            myCanvas.drawLine(...layout.getStartPoint(xp, 20), ...layout.getStartPoint(xp, scaleHeight));
         }
+        const {
+            config: { scaleHeight },
+            context: { canvas: { width } },
+            ratio,
+            layout,
+            context,
+            startPoint,
+            handleWheel,
+        } = this;
+        const initPoint = layout.getStartPoint(0, scaleHeight);
+        const wheelPointX = (wheelPoint[0] * ratio);
+        const countDivider = (wheelPointX - startPoint[0]) / dividerWidth;
+
+        myCanvas.clearup(0, 0, undefined, scaleHeight + 30);
+        myCanvas.drawLine(...initPoint, ...layout.getStartPoint(width, scaleHeight));
+
+        handleWheel(deltaY);
+
+        let axisX = 0;
+
+        if (countDivider > 0){
+            axisX = wheelPointX - (countDivider * dividerWidth);
+        }
+        this.startPoint[0] = axisX;
+
+        console.log(countDivider, wheelPoint, startPoint, axisX);
+
         for (let i = 0, len = time.max; i <= len; i++) {
-            line(i)
-            const xp = i * dividerWidth
+            const xp = (i * dividerWidth) + axisX;
+
+            line(i, layout, scaleHeight, xp);
+
             context.font = '24px monospace';
-            context.textAlign = 'center';
-            context.fillText(`${i}${timeType}`, ...layout.getStartPoint(xp, 30), 30);
+            context.textAlign = 'left';
+            context.fillText(`${i}${timeType}`, ...layout.getStartPoint(xp, 36), 30);
         }
     }
 }
 
-export default Scale
+export default Scale;

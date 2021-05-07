@@ -40,16 +40,18 @@ class ICanvas {
     inPath=([x, y], path) => {
         const context = this.getContext()
         if (path){
-            return context.isPointInPath(path, x, y)
+            return context.isPointInPath(path, x, y) || context.isPointInStroke(path, x, y)
         }
-        return context.isPointInPath(x, y)
+        return context.isPointInPath(x, y) || context.isPointInStroke(x, y)
     }
 
     drawRectLine=(x, y, w, h, c = '#000') => {
         const { context } = this;
-        context.beginPath()
-        context.strokeStyle = c;
+        context.lineWidth = 10;
+        context.strokeStyle = 'rgba(255,0,0,0)';
+        // context.strokeStyle = c;
         context.fillStyle = c;
+        context.beginPath()
         context.rect(x, y, w, h);
         context.stroke()
         context.fill()
@@ -57,17 +59,19 @@ class ICanvas {
 
     drawDot = (x, y, r, c = '#000') => {
         const { context } = this;
-        context.beginPath()
+        context.lineWidth = 1;
         context.strokeStyle = c;
         context.fillStyle = c;
+        context.beginPath()
         context.arc(x, y, r, 0, Math.PI * 2);
         context.stroke()
         context.fill()
     }
 
-    drawLine(x, y, x1, y1, w = 2){
+    drawLine(x, y, x1, y1, w = 2, c = '#000'){
         const { context } = this;
         context.lineWidth = w
+        context.strokeStyle = c;
         context.beginPath();
         context.moveTo(x, y);
         context.lineTo(x1, y1);

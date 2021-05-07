@@ -86,7 +86,7 @@ class Timeline {
         const contentEndX = (x + width) - right;
         // const contentEndY = y + deliv + scaleHeight;
         const contentWidth = contentEndX - contentStartX;
-        const contentHeight = 2;
+        const contentHeight = 1;
         myCanvas.drawDot(...layout.getStartPoint(contentStartX, contentStartY), 4);
         myCanvas.drawRectLine(...layout.getStartPoint(contentStartX, contentStartY), contentWidth, contentHeight)
         if (this.eventPos){
@@ -160,8 +160,14 @@ class Timeline {
     }
 
     addEvent(){
+        let moveDist = 0;
         const { context: { canvas }, scale, container } = this;
-        const moveCallback = (e) => { console.log(e) }
+        const moveCallback = (e) => { 
+            if (Math.abs(e.clientX - moveDist) > 10){
+                container.style.cursor = 'move'
+                console.log(e)
+            }
+        }
         canvas.addEventListener('click', (e) => {
             this.render({ eventPos: getCanvasPoint(canvas, [e.clientX, e.clientY]) })
         }, false)
@@ -172,13 +178,13 @@ class Timeline {
             this.drawContent()
         }, false)
         canvas.addEventListener('mousedown', (e) => {
-            container.style.cursor = 'move'
+            moveDist = e.clientX;
             moveCallback(e)
             canvas.addEventListener('mousemove', moveCallback, false)
         }, false)
         canvas.addEventListener('mouseup', (e) => {
-            container.style.cursor = ''
             moveCallback(e)
+            container.style.cursor = ''
             canvas.removeEventListener('mousemove', moveCallback, false)
         }, false)
     }
