@@ -5,7 +5,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import G6 from '@antv/g6'
-import Timeline from 'components/timeline'
+import Timeline from '@WLH/timeline'
 
 G6.Graph.prototype.selected = function (item){ 
     this.update(item, {
