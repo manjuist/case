@@ -1,4 +1,4 @@
-module.exports= {
-  "/info/list": "/list",
-  "/info/email": "/email",
+module.exports = {
+    '/info/list': '/list',
+    '/info/email': '/email',
 }

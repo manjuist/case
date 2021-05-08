@@ -26,7 +26,6 @@ const graphData = { nodes };
 function G6Demo(){
     const ref = React.createRef();
     useEffect(() => {
-        console.log(2)
         const dom = ref.current;
         // create a network
         const data = {

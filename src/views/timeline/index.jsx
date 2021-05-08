@@ -32,7 +32,7 @@ while (count > 0){
 
 const initdata = { nodes };
 let graph = null;
-function G6Demo(){
+function Tmline(){
     const ref = React.createRef();
     const [graphData, setGraphData] = useState(initdata);
     useEffect(() => {
@@ -72,4 +72,4 @@ function G6Demo(){
     )
 }
 
-export default G6Demo;
+export default Tmline;

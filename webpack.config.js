@@ -13,7 +13,8 @@ const APP_PATH = path.join(ROOT_PATH, 'src')
 const production = process.env.NODE_ENV
 
 const config = {
-    devtool: 'source-map',
+    // devtool: 'source-map',
+    devtool: 'cheap-eval-source-map',
     entry: {
         app: path.join(APP_PATH, 'app.js')
     },

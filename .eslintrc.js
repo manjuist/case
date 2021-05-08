@@ -1,4 +1,3 @@
-/*eslint-disable*/
 module.exports = {
     'root': true,
     'extends': 'airbnb',
@@ -28,7 +27,11 @@ module.exports = {
         'jsdoc'
     ],
     'globals': {
-        'domain': true
+        'domain': true,
+        'test': true,
+        'expect': true,
+        'document': true,
+        'window': true,
     },
     'rules': {
         // 句尾分号可以省略
