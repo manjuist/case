@@ -16,7 +16,7 @@ G6.Graph.prototype.selected = function (item){
     })
 }
 
-let count = 15;
+let count = 5;
 const nodes = []
 const num = (min = 0, max = 200) => min + (((max - min) + 1) * Math.random())
 while (count > 0){
@@ -30,7 +30,29 @@ while (count > 0){
 }
 
 
-const initdata = { nodes };
+const initdata = { 
+    nodes,
+    edges:[
+        {
+            source:'n1',
+            target:'n2',
+            label:'n1-n2',
+            date: '2021-05-10',
+        },
+        {
+            source:'n2',
+            target:'n4',
+            label:'n1-n2',
+            date: '2021-05-15',
+        },
+        {
+            source:'n3',
+            target:'n0',
+            label:'n1-n2',
+            date: '2021-05-17',
+        }
+    ]
+};
 let graph = null;
 function Tmline(){
     const ref = React.createRef();
@@ -63,11 +85,11 @@ function Tmline(){
 
     return (
         <div>
-            <div ref={ref} />
             <Timeline
                 data={graphData}
                 onClick={clickHandler}
             />
+            <div ref={ref} />
         </div>
     )
 }
