@@ -17,7 +17,9 @@ G6.Graph.prototype.selected = function (item){
 }
 
 let count = 5;
+let count2 = 100;
 const nodes = []
+const edges = []
 const num = (min = 0, max = 200) => min + (((max - min) + 1) * Math.random())
 while (count > 0){
     count -= 1;
@@ -28,30 +30,19 @@ while (count > 0){
         y: num(),
     })
 }
+while (count2 > 0){
+    count2 -= 1;
+    edges.push({
+        date: `2021-05-${Math.floor(num(1,31))}`,
+        target: `n${Math.floor(num(0,4))}`,
+        source: `n${Math.floor(num(0,4))}`,
+    })
+}
 
 
 const initdata = { 
     nodes,
-    edges:[
-        {
-            source:'n1',
-            target:'n2',
-            label:'n1-n2',
-            date: '2021-05-10',
-        },
-        {
-            source:'n2',
-            target:'n4',
-            label:'n1-n2',
-            date: '2021-05-15',
-        },
-        {
-            source:'n3',
-            target:'n0',
-            label:'n1-n2',
-            date: '2021-05-17',
-        }
-    ]
+    edges,
 };
 let graph = null;
 function Tmline(){
