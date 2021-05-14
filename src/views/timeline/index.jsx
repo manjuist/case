@@ -16,8 +16,9 @@ G6.Graph.prototype.selected = function (item){
     })
 }
 
-let count = 5;
-let count2 = 100;
+let count = 20;
+let count2 = 50;
+let count3 = count-1;
 const nodes = []
 const edges = []
 const num = (min = 0, max = 200) => min + (((max - min) + 1) * Math.random())
@@ -34,8 +35,8 @@ while (count2 > 0){
     count2 -= 1;
     edges.push({
         date: `2021-05-${Math.floor(num(1,31))}`,
-        target: `n${Math.floor(num(0,4))}`,
-        source: `n${Math.floor(num(0,4))}`,
+        target: `n${Math.floor(num(0,count3))}`,
+        source: `n${Math.floor(num(0,count3))}`,
     })
 }
 
