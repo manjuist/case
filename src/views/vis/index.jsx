@@ -8,7 +8,7 @@
 import React, { useEffect } from 'react'
 import vis from './vis'
 
-let count = 10000;
+let count = 500;
 const nodes = []
 // const num = (min = 0, max = 2000) => min + (((max - min) + 1) * Math.random())
 while (count > 0){

@@ -1,10 +1,11 @@
 import React from 'react';
 import { put } from 'redux-saga/effects'
 import { connect } from 'react-redux'
+import './index.scss'
 
 class FLIP extends React.Component {
     state = {
-        list: [1]
+        list: [111111, 222222]
     }
 
     componentDidMount(){
@@ -23,16 +24,16 @@ class FLIP extends React.Component {
     render(){
         const { list } = this.state
         return (
-            <div ref={this.listRef}>
+            <ul ref={this.listRef} className="list">
                 {
                     list.map((cur, ind) => (
-                        <div key={ind}>
-                            <div>{cur}</div>
-                            <div>del</div>
-                        </div>
+                        <li key={ind}>
+                            <span>{cur}</span>
+                            <button>del</button>
+                        </li>
                     ))
                 }
-            </div>
+            </ul>
         )
     }
 }

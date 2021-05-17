@@ -11,7 +11,6 @@ import saga from './saga'
 import { setShowMoreHome } from '../views/home/homeRedux'
 
 const sagaMiddleware = createSagaMiddleware()
-/* eslint-disable-next-line */
 const middleWare = [thunk, logger, sagaMiddleware]
 const composeEnhancers =
   typeof window === 'object' &&
