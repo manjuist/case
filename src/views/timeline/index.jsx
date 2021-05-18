@@ -6,13 +6,14 @@
 import React, { useEffect, useState } from 'react'
 import G6 from '@antv/g6'
 import Timeline from '@WLH/timeline'
+import Selection from '@WLH/graph-selection'
 
 G6.Graph.prototype.selected = function (item){ 
     this.update(item, {
         style: {
             stroke: 'blue',
             lineWidth: 5,
-        }, 
+        },
     })
 }
 
@@ -77,10 +78,12 @@ function Tmline(){
 
     return (
         <div>
-            <Timeline
-                data={graphData}
-                onClick={clickHandler}
-            />
+            <Selection>
+                <Timeline
+                    data={graphData}
+                    onClick={clickHandler}
+                />
+            </Selection>
             <div ref={ref} />
         </div>
     )
