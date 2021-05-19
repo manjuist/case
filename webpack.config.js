@@ -14,7 +14,7 @@ const production = process.env.NODE_ENV
 
 const config = {
     // devtool: 'source-map',
-    devtool: 'cheap-eval-source-map',
+    devtool: 'eval-source-map',
     entry: {
         app: path.join(APP_PATH, 'app.js')
     },

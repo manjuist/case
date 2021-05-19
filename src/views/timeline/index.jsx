@@ -1,5 +1,5 @@
 /**
- * name: index.jsx
+ * name: timeline/index.jsx
  * author: Deve
  * date: 2021-04-19
  */
@@ -8,7 +8,7 @@ import G6 from '@antv/g6'
 import Timeline from '@WLH/timeline'
 import Selection from '@WLH/graph-selection'
 
-G6.Graph.prototype.selected = function (item){ 
+G6.Graph.prototype.selected = function (item){
     this.update(item, {
         style: {
             stroke: 'blue',
@@ -42,7 +42,7 @@ while (count2 > 0){
 }
 
 
-const initdata = { 
+const initdata = {
     nodes,
     edges,
 };
@@ -76,15 +76,28 @@ function Tmline(){
         list.forEach(item => graph.selected(item))
     }
 
+    function getSelectedNodes(inPath){
+        const allNodes = graph.getNodes()
+        const list = allNodes.filter(item => {
+            const data = item.getModel()
+            const g6Pos = graph.getCanvasByPoint(data.x, data.y)
+            console.log(data.id, data.x, data.y, g6Pos)
+            return inPath([g6Pos.x*2, g6Pos.y*2])
+        })
+        list.forEach(item => graph.selected(item))
+    }
+
     return (
         <div>
-            <Selection>
-                <Timeline
-                    data={graphData}
-                    onClick={clickHandler}
-                />
+            <Selection
+                getSelectedNodes={getSelectedNodes }
+            >
+                <div ref={ref} />
             </Selection>
-            <div ref={ref} />
+            <Timeline
+                data={graphData}
+                onClick={clickHandler}
+            />
         </div>
     )
 }
